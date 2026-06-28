@@ -1,4 +1,4 @@
-const { PLANS, SUBSCRIPTION_URL, DURATION_LABELS } = require('./config');
+const { SUBSCRIPTION_URL, DURATION_LABELS } = require('./config');
 
 const onboardingKeyboard = () => ({
   inline_keyboard: [
@@ -36,9 +36,8 @@ const classKeyboard = () => ({
 const subscriptionUpsellKeyboard = (showTrial) => ({
   inline_keyboard: [
     ...(showTrial ? [[{ text: '🎁 Essai gratuit (3 jours)', callback_data: 'onboard:trial' }]] : []),
-    [{ text: `⭐ Standard — ${PLANS.standard.price}`, url: SUBSCRIPTION_URL }],
-    [{ text: `🚀 Premium — ${PLANS.premium.price}`, url: SUBSCRIPTION_URL }],
-    [{ text: '🔑 J\'ai un code', callback_data: 'onboard:code' }]
+    [{ text: '🔑 J\'ai un code', callback_data: 'onboard:code' }],
+    [{ text: '💳 Acheter un abonnement', url: SUBSCRIPTION_URL }]
   ]
 });
 
