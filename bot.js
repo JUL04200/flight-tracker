@@ -231,7 +231,7 @@ async function handleCallback(cb) {
   if (data === 'menu:settings') return sendTelegram('⚙️ <b>Paramètres</b>', chatId, kb.settingsKeyboard());
   if (data === 'menu:help') {
     return sendTelegram(
-      '❓ <b>Aide</b>\n\n📉 Surveiller un prix : suit un trajet et vous alerte sous un seuil donné.\n💺 Surveiller une disponibilité : vous alerte dès qu\'un vol précis se libère.\n\nCommandes : /start, /admin (réservé).',
+      '❓ <b>Aide</b>\n\n📉 Surveiller un prix : suit un trajet et vous alerte dès que le prix descend sous le seuil choisi.\n💺 Surveiller une disponibilité : vous alerte dès qu\'un vol précis se libère.\n📂 Mes surveillances : voir, mettre en pause ou supprimer vos surveillances.\n⭐ Mon abonnement : voir votre plan et sa date d\'expiration.\n\nCommande : /start — revenir au menu principal.',
       chatId, kb.backToMenuKeyboard()
     );
   }
