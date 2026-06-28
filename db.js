@@ -20,6 +20,7 @@ function load() {
 }
 
 function save() {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
   fs.writeFileSync(DATA_FILE, JSON.stringify(db, null, 2));
 }
 
