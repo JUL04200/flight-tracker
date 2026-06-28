@@ -53,7 +53,7 @@ function isAdmin(chatId) {
 }
 
 async function showMainMenu(chatId, intro) {
-  await sendTelegram(`${intro ? intro + '\n\n' : ''}✈️ <b>Menu principal</b>`, chatId, kb.mainMenuKeyboard());
+  await sendTelegram(`${intro ? intro + '\n\n' : ''}✈️ <b>Menu principal</b>`, chatId, kb.mainMenuKeyboard(isAdmin(chatId)));
 }
 
 async function showOnboarding(chatId) {
@@ -224,6 +224,10 @@ async function handleCallback(cb) {
   await answerCallback(cb.id);
 
   if (data === 'menu:home') return showMainMenu(chatId);
+  if (data === 'menu:admin') {
+    if (!isAdmin(chatId)) return;
+    return sendTelegram('🛠 <b>Panneau administrateur</b>', chatId, kb.adminMenuKeyboard());
+  }
   if (data === 'menu:price') return startPriceFlow(chatId);
   if (data === 'menu:avail') return startAvailFlow(chatId);
   if (data === 'menu:list') return listWatchers(chatId);
@@ -385,4 +389,4 @@ async function expiryReminderSweep() {
   }
 }
 
-module.exports = { start, sendTelegram, expiryReminderSweep };
+module.exports = { start, sendTelegram, expiryReminderSweep, __test_handleText: handleText, __test_handleCallback: handleCallback };

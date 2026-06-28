@@ -7,14 +7,15 @@ const onboardingKeyboard = () => ({
   ]
 });
 
-const mainMenuKeyboard = () => ({
+const mainMenuKeyboard = (isAdmin) => ({
   inline_keyboard: [
     [{ text: '📉 Surveiller un prix', callback_data: 'menu:price' }],
     [{ text: '💺 Surveiller une disponibilité', callback_data: 'menu:avail' }],
     [{ text: '📂 Mes surveillances', callback_data: 'menu:list' }],
     [{ text: '⭐ Mon abonnement', callback_data: 'menu:sub' }],
     [{ text: '⚙️ Paramètres', callback_data: 'menu:settings' }],
-    [{ text: '❓ Aide', callback_data: 'menu:help' }]
+    [{ text: '❓ Aide', callback_data: 'menu:help' }],
+    ...(isAdmin ? [[{ text: '🛠 Administration', callback_data: 'menu:admin' }]] : [])
   ]
 });
 
