@@ -3,10 +3,12 @@ const cron = require('node-cron');
 const { load } = require('./db');
 const watchers = require('./watchers');
 const bot = require('./bot');
+const { seedCodes } = require('./seed-codes');
 
 const app = express();
 
 load();
+seedCodes();
 watchers.restoreWatchers();
 bot.start();
 
