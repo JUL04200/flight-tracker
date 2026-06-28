@@ -256,7 +256,7 @@ async function handleCallback(cb) {
       await sendTelegram('❌ Vous avez déjà utilisé votre essai gratuit.', chatId, kb.subscriptionUpsellKeyboard(false));
       return;
     }
-    await sendTelegram(`✅ Votre essai Premium est activé jusqu'au ${fmtDate(end.toISOString())}.\n\nProfitez de toutes les fonctionnalités Premium pendant 3 jours.`, chatId);
+    await sendTelegram(`✅ Votre essai Premium est activé jusqu'au ${fmtDate(end.toISOString())}.\n\nProfitez de toutes les fonctionnalités Premium pendant 2 jours.`, chatId);
     return showMainMenu(chatId);
   }
   if (data === 'onboard:code') {

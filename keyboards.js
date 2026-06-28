@@ -2,7 +2,7 @@ const { SUBSCRIPTION_URL, DURATION_LABELS } = require('./config');
 
 const onboardingKeyboard = () => ({
   inline_keyboard: [
-    [{ text: '🎁 Essai gratuit (3 jours)', callback_data: 'onboard:trial' }],
+    [{ text: '🎁 Essai gratuit (2 jours)', callback_data: 'onboard:trial' }],
     [{ text: '💳 J\'ai un abonnement', callback_data: 'onboard:code' }]
   ]
 });
@@ -35,7 +35,7 @@ const classKeyboard = () => ({
 
 const subscriptionUpsellKeyboard = (showTrial) => ({
   inline_keyboard: [
-    ...(showTrial ? [[{ text: '🎁 Essai gratuit (3 jours)', callback_data: 'onboard:trial' }]] : []),
+    ...(showTrial ? [[{ text: '🎁 Essai gratuit (2 jours)', callback_data: 'onboard:trial' }]] : []),
     [{ text: '🔑 J\'ai un code', callback_data: 'onboard:code' }],
     [{ text: '💳 Acheter un abonnement', url: SUBSCRIPTION_URL }]
   ]
