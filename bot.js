@@ -67,9 +67,10 @@ async function requirePlanOrUpsell(chatId) {
   if (check.ok) return true;
 
   if (check.reason === 'no_plan') {
-    await sendTelegram('🔒 Vous n\'avez pas d\'abonnement actif.\n\nActivez votre essai gratuit ou entrez un code pour continuer.', chatId, kb.subscriptionUpsellKeyboard());
+    const user = getUser(chatId);
+    await sendTelegram('🔒 Vous n\'avez pas d\'abonnement actif.\n\nActivez votre essai gratuit ou entrez un code pour continuer.', chatId, kb.subscriptionUpsellKeyboard(!user.trialUsed));
   } else if (check.reason === 'limit') {
-    await sendTelegram(`📂 Vous avez atteint la limite de votre plan (max ${check.max} surveillance${check.max > 1 ? 's' : ''} actives).\n\nPassez à un plan supérieur pour en suivre davantage.`, chatId, kb.subscriptionUpsellKeyboard());
+    await sendTelegram(`📂 Vous avez atteint la limite de votre plan (max ${check.max} surveillance${check.max > 1 ? 's' : ''} actives).\n\nPassez à un plan supérieur pour en suivre davantage.`, chatId, kb.subscriptionUpsellKeyboard(false));
   }
   return false;
 }
@@ -77,7 +78,7 @@ async function requirePlanOrUpsell(chatId) {
 async function showSubscriptionStatus(chatId) {
   const user = getUser(chatId);
   if (!isActive(user)) {
-    return sendTelegram('⭐ <b>Mon abonnement</b>\n\nAucun abonnement actif pour le moment.', chatId, kb.subscriptionUpsellKeyboard());
+    return sendTelegram('⭐ <b>Mon abonnement</b>\n\nAucun abonnement actif pour le moment.', chatId, kb.subscriptionUpsellKeyboard(!user.trialUsed));
   }
   const planLabel = user.plan === 'trial' ? 'Essai gratuit (Premium)' : PLANS[user.plan].label;
   await sendTelegram(`⭐ <b>Mon abonnement</b>\n\nPlan : <b>${planLabel}</b>\nExpire le : ${fmtDate(user.planExpiresAt)}`, chatId, kb.backToMenuKeyboard());
@@ -252,7 +253,7 @@ async function handleCallback(cb) {
   if (data === 'onboard:trial') {
     const end = startTrial(chatId);
     if (!end) {
-      await sendTelegram('❌ Vous avez déjà utilisé votre essai gratuit.', chatId, kb.subscriptionUpsellKeyboard());
+      await sendTelegram('❌ Vous avez déjà utilisé votre essai gratuit.', chatId, kb.subscriptionUpsellKeyboard(false));
       return;
     }
     await sendTelegram(`✅ Votre essai Premium est activé jusqu'au ${fmtDate(end.toISOString())}.\n\nProfitez de toutes les fonctionnalités Premium pendant 3 jours.`, chatId);
@@ -383,10 +384,11 @@ async function expiryReminderSweep() {
       if (msLeft <= 24 * 3600000) {
         user.remindedExpiry = true;
         save();
-        await sendTelegram('⏳ Votre essai Premium expire dans 24 heures.\n\nChoisissez un abonnement pour continuer à recevoir toutes vos alertes.', user.id, kb.subscriptionUpsellKeyboard());
+        await sendTelegram('⏳ Votre essai Premium expire dans 24 heures.\n\nChoisissez un abonnement pour continuer à recevoir toutes vos alertes.', user.id, kb.subscriptionUpsellKeyboard(false));
       }
     }
   }
 }
 
 module.exports = { start, sendTelegram, expiryReminderSweep, __test_handleText: handleText, __test_handleCallback: handleCallback };
+// note: __test_* exports are only for the temporary test_bot.js harness
